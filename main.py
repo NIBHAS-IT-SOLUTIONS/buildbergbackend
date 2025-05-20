@@ -133,6 +133,7 @@ async def update_gallery(
     client_name: str = Form(...),
     building_square_feet: float = Form(...),
     date: str = Form(...),
+    protype: str = Form(...),
     image_url: str = Form(...),
     product_img: Optional[UploadFile] = File(None)
     ):
@@ -143,6 +144,7 @@ async def update_gallery(
     print(site_name)
     print(client_name)
     print(building_square_feet)
+    print(protype)
     print(str(work_date_obj))
     print(image_url)
 
@@ -163,6 +165,7 @@ async def update_gallery(
                     Gallery.site:site_name,
                     Gallery.name:client_name,
                     Gallery.square_feet:building_square_feet,
+                    Gallery.protype:protype,
                     Gallery.image_url:filename,
                     Gallery.date:str(work_date_obj)
                     })
@@ -184,6 +187,7 @@ async def update_gallery(
                     Gallery.name:client_name,
                     Gallery.square_feet:building_square_feet,
                     Gallery.image_url:image_url,
+                    Gallery.protype:protype,
                     Gallery.date:str(work_date_obj)
                 })
                 db.commit()
@@ -208,6 +212,7 @@ async def upload_image(
     client_name: str = Form(...),
     building_square_feet: float = Form(...),
     date:str=Form(...),
+    protype:str=Form(...),
     product_img: UploadFile = File(...)
     ): 
     work_date_obj = datetime.strptime(date, "%Y-%m-%d").date()
@@ -217,6 +222,7 @@ async def upload_image(
     print(client_name)
     print(building_square_feet)
     print(str(work_date_obj))
+    print(protype)
     print(product_img.filename)
     global password_hash
     result=await Auhtentication(authorization,password_hash)
@@ -227,6 +233,7 @@ async def upload_image(
             square_feet=building_square_feet,
             name=client_name,
             image_url=filename,
+            protype=protype,
             date=str(work_date_obj)
             )
 
@@ -312,7 +319,7 @@ async def getgallery():
         print(f"type:{type(galleries[0])}")
         
         for gallery in galleries:
-            d= {"id": gallery.id,"name": gallery.name,"site": gallery.site,"square_feet": gallery.square_feet,"image_url": gallery.image_url,"date":gallery.date
+            d= {"id": gallery.id,"name": gallery.name,"site": gallery.site,"square_feet": gallery.square_feet,"image_url": gallery.image_url,"project-type":gallery.protype,"date":gallery.date
             }
             gallery_data.append(d)
             # print(f"ID: {gallery.id}, Name: {gallery.name}, Site: {gallery.site}, Sqft: {gallery.square_feet}, Image URL: {gallery.image_url}")
